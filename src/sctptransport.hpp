@@ -38,16 +38,11 @@ public:
 	static void Init();
 	static void Cleanup();
 
-	enum class State { Disconnected, Connecting, Connected, Failed };
-
 	using amount_callback = std::function<void(uint16_t streamId, size_t amount)>;
-	using state_callback = std::function<void(State state)>;
 
 	SctpTransport(std::shared_ptr<Transport> lower, uint16_t port, message_callback recvCallback,
 	              amount_callback bufferedAmountCallback, state_callback stateChangeCallback);
 	~SctpTransport();
-
-	State state() const;
 
 	bool stop() override;
 	bool send(message_ptr message) override; // false if buffered
@@ -70,7 +65,6 @@ private:
 	void connect();
 	void shutdown();
 	void incoming(message_ptr message) override;
-	void changeState(State state);
 
 	bool trySendQueue();
 	bool trySendMessage(message_ptr message);
@@ -97,10 +91,6 @@ private:
 	std::condition_variable_any mWrittenCondition;
 	bool mWritten = false;
 	bool mWrittenOnce = false;
-
-	state_callback mStateChangeCallback;
-	std::atomic<State> mState;
-
 	binary mPartialRecv, mPartialStringData, mPartialBinaryData;
 
 	static int RecvCallback(struct socket *sock, union sctp_sockstore addr, void *data, size_t len,

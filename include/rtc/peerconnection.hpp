@@ -88,8 +88,6 @@ public:
 	void onGatheringStateChange(std::function<void(GatheringState state)> callback);
 
 private:
-	init_token mInitToken = Init::Token();
-
 	std::shared_ptr<IceTransport> initIceTransport(Description::Role role);
 	std::shared_ptr<DtlsTransport> initDtlsTransport();
 	std::shared_ptr<SctpTransport> initSctpTransport();
@@ -119,6 +117,8 @@ private:
 
 	const Configuration mConfig;
 	const std::shared_ptr<Certificate> mCertificate;
+
+	init_token mInitToken = Init::Token();
 
 	std::optional<Description> mLocalDescription, mRemoteDescription;
 	mutable std::recursive_mutex mLocalDescriptionMutex, mRemoteDescriptionMutex;
