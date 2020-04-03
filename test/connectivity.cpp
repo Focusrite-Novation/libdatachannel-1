@@ -130,6 +130,7 @@ void test_connectivity() {
 	pc1->close();
 	this_thread::sleep_for(1s);
 	pc2->close();
+	this_thread::sleep_for(1s);
 
 	cout << "Success" << endl;
 }

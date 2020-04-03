@@ -184,6 +184,7 @@ int test_capi_main() {
 	deletePeer(peer1);
 	sleep(1);
 	deletePeer(peer2);
+	sleep(1);
 
 	printf("Success\n");
 	return 0;
